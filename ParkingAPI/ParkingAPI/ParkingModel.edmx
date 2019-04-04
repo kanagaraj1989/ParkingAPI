@@ -1,0 +1,198 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="ParkingModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="ParkingLogs">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PlateNumber" Type="varchar" MaxLength="30" />
+          <Property Name="Imagecdn" Type="varchar" MaxLength="100" />
+          <Property Name="INAgentMACID" Type="varchar" MaxLength="50" />
+          <Property Name="OUTAgentMACID" Type="varchar" MaxLength="50" />
+          <Property Name="Status" Type="varchar" MaxLength="20" />
+          <Property Name="InGateSessionID" Type="varchar" MaxLength="100" />
+          <Property Name="OutGateSessionID" Type="varchar" MaxLength="100" />
+          <Property Name="InTimeStamp" Type="datetime" />
+          <Property Name="OutTimeStamp" Type="datetime" />
+        </EntityType>
+        <EntityType Name="UserProfile">
+          <Key>
+            <PropertyRef Name="UserName" />
+          </Key>
+          <Property Name="UserId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Password" Type="varchar" MaxLength="50" />
+          <Property Name="IsActive" Type="bit" />
+          <Property Name="UserType" Type="int" />
+          <Property Name="CreatedBy" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <Association Name="FK_ParkingLogs_UserProfile_INAgentMACID">
+          <End Role="UserProfile" Type="Self.UserProfile" Multiplicity="0..1" />
+          <End Role="ParkingLogs" Type="Self.ParkingLogs" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserProfile">
+              <PropertyRef Name="UserName" />
+            </Principal>
+            <Dependent Role="ParkingLogs">
+              <PropertyRef Name="INAgentMACID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ParkingLogs_UserProfile_OUTAgentMACID">
+          <End Role="UserProfile" Type="Self.UserProfile" Multiplicity="0..1" />
+          <End Role="ParkingLogs" Type="Self.ParkingLogs" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserProfile">
+              <PropertyRef Name="UserName" />
+            </Principal>
+            <Dependent Role="ParkingLogs">
+              <PropertyRef Name="OUTAgentMACID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="ParkingModelStoreContainer">
+          <EntitySet Name="ParkingLogs" EntityType="Self.ParkingLogs" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="UserProfile" EntityType="Self.UserProfile" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_ParkingLogs_UserProfile_INAgentMACID" Association="Self.FK_ParkingLogs_UserProfile_INAgentMACID">
+            <End Role="UserProfile" EntitySet="UserProfile" />
+            <End Role="ParkingLogs" EntitySet="ParkingLogs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ParkingLogs_UserProfile_OUTAgentMACID" Association="Self.FK_ParkingLogs_UserProfile_OUTAgentMACID">
+            <End Role="UserProfile" EntitySet="UserProfile" />
+            <End Role="ParkingLogs" EntitySet="ParkingLogs" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="ParkingModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="ParkingLog">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PlateNumber" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="Imagecdn" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="INAgentMACID" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="OUTAgentMACID" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Status" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="InGateSessionID" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="OutGateSessionID" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="InTimeStamp" Type="DateTime" Precision="3" />
+          <Property Name="OutTimeStamp" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="UserProfile" Relationship="Self.FK_ParkingLogs_UserProfile_INAgentMACID" FromRole="ParkingLogs" ToRole="UserProfile" />
+          <NavigationProperty Name="UserProfile1" Relationship="Self.FK_ParkingLogs_UserProfile_OUTAgentMACID" FromRole="ParkingLogs" ToRole="UserProfile" />
+        </EntityType>
+        <EntityType Name="UserProfile">
+          <Key>
+            <PropertyRef Name="UserName" />
+          </Key>
+          <Property Name="UserId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Password" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="IsActive" Type="Boolean" />
+          <Property Name="UserType" Type="Int32" />
+          <Property Name="CreatedBy" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="ParkingLogs" Relationship="Self.FK_ParkingLogs_UserProfile_INAgentMACID" FromRole="UserProfile" ToRole="ParkingLogs" />
+          <NavigationProperty Name="ParkingLogs1" Relationship="Self.FK_ParkingLogs_UserProfile_OUTAgentMACID" FromRole="UserProfile" ToRole="ParkingLogs" />
+        </EntityType>
+        <Association Name="FK_ParkingLogs_UserProfile_INAgentMACID">
+          <End Role="UserProfile" Type="Self.UserProfile" Multiplicity="0..1" />
+          <End Role="ParkingLogs" Type="Self.ParkingLog" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserProfile">
+              <PropertyRef Name="UserName" />
+            </Principal>
+            <Dependent Role="ParkingLogs">
+              <PropertyRef Name="INAgentMACID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ParkingLogs_UserProfile_OUTAgentMACID">
+          <End Role="UserProfile" Type="Self.UserProfile" Multiplicity="0..1" />
+          <End Role="ParkingLogs" Type="Self.ParkingLog" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserProfile">
+              <PropertyRef Name="UserName" />
+            </Principal>
+            <Dependent Role="ParkingLogs">
+              <PropertyRef Name="OUTAgentMACID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="ParkingEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="ParkingLogs" EntityType="Self.ParkingLog" />
+          <EntitySet Name="UserProfiles" EntityType="Self.UserProfile" />
+          <AssociationSet Name="FK_ParkingLogs_UserProfile_INAgentMACID" Association="Self.FK_ParkingLogs_UserProfile_INAgentMACID">
+            <End Role="UserProfile" EntitySet="UserProfiles" />
+            <End Role="ParkingLogs" EntitySet="ParkingLogs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ParkingLogs_UserProfile_OUTAgentMACID" Association="Self.FK_ParkingLogs_UserProfile_OUTAgentMACID">
+            <End Role="UserProfile" EntitySet="UserProfiles" />
+            <End Role="ParkingLogs" EntitySet="ParkingLogs" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="ParkingModelStoreContainer" CdmEntityContainer="ParkingEntities">
+          <EntitySetMapping Name="ParkingLogs">
+            <EntityTypeMapping TypeName="ParkingModel.ParkingLog">
+              <MappingFragment StoreEntitySet="ParkingLogs">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="PlateNumber" ColumnName="PlateNumber" />
+                <ScalarProperty Name="Imagecdn" ColumnName="Imagecdn" />
+                <ScalarProperty Name="INAgentMACID" ColumnName="INAgentMACID" />
+                <ScalarProperty Name="OUTAgentMACID" ColumnName="OUTAgentMACID" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="InGateSessionID" ColumnName="InGateSessionID" />
+                <ScalarProperty Name="OutGateSessionID" ColumnName="OutGateSessionID" />
+                <ScalarProperty Name="InTimeStamp" ColumnName="InTimeStamp" />
+                <ScalarProperty Name="OutTimeStamp" ColumnName="OutTimeStamp" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UserProfiles">
+            <EntityTypeMapping TypeName="ParkingModel.UserProfile">
+              <MappingFragment StoreEntitySet="UserProfile">
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="UserType" ColumnName="UserType" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
